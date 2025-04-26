@@ -1,0 +1,5 @@
+Free Tuition;Rahula College Matara;Wilfred Gunasekara Mawatha, Matara;+94412222346;Government school, free education for grades 1-13. Includes science, arts, commerce streams.;Source: Inferred, verify with www.moe.gov.lk
+Free Tuition;MMC Literacy Program;Contact MMC for location;+94412222275;Assumed adult literacy classes, free for residents. Verify with MMC or www.matara.dist.gov.lk.;Source: Inferred, verify with MMC
+NGO Program;Save the Children Matara;Contact for location;+94112588103;Literacy and vocational training for youth, assumed active in Matara based on Southern Province programs.;Source: Inferred, verify with www.savethechildren.org
+Government Program;Ministry of Education;Island-wide, contact MMC;+94412222275;Free textbooks, uniforms for school students. Vocational training via Vocational Training Authority (VTA) in Matara.;Source: www.moe.gov.lk, 2023
+Vocational Training;VTA Matara Center;Contact MMC for location;+94412222275;Free or subsidized courses in IT, mechanics, hospitality. Verify address with VTA or MMC.;Source: Inferred, verify with www.vta.lk

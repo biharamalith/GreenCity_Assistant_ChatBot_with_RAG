@@ -1,0 +1,5 @@
+Public Transport;Matara Bus Station;Central Matara, near A2 highway;+94412222275;Frequent SLTB and private buses to Colombo (160 km, 3-4 hours), Tangalla (40 km, 1 hour). Connects to interior towns. 24/7 service.;Source: touristlink.com, 2023
+Public Transport;Matara Railway Station;Central Matara, near Nilwala River;+94412222347;Coastal line to Colombo, Galle, extended to Kataragama (26.75 km, since 2013). Scenic routes, 2nd/3rd-class seats, reservations available.;Source: railway.gov.lk, transport.gov.lk
+Electric Buses;SLTB Matara Depot;Contact MMC for location;+94412222275;No confirmed electric buses in Matara (2025). Colombo BRT plans electric buses (UNDP, 2016). SLTB may deploy Lanka Ashok Leyland electric models.;Source: undp.org, 2016
+Bike Lanes;Matara Urban Zone;Near A2 highway or MMC areas;+94412222275;No dedicated bike lanes confirmed. Assumed in urban Matara for eco-mobility, needs MMC verification.;Source: Inferred, verify with www.matara.dist.gov.lk
+Expressway;E01 Southern Expressway;Colombo to Matara, 126 km;+94112691111;Opened 2014, reduces emissions via faster travel. No bike lanes or bus stops in Matara.;Source: en.wikipedia.org, 2014
