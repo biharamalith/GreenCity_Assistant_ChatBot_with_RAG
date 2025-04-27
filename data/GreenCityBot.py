@@ -2,77 +2,131 @@ import os
 import warnings
 import streamlit as st
 from dotenv import load_dotenv
-from functools import partial
-from langchain_huggingface import HuggingFaceEndpoint, HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFacePipeline, HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, pipeline
+import torch
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # --- Setup ---
 warnings.filterwarnings("ignore")
 load_dotenv()
 
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = os.getenv("HUGGINGFACEHUB_API_TOKEN")
+# --- Check and Generate FAISS Index if Missing ---
+if not os.path.exists("faiss_index"):
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.schema import Document
+
+    data_files = [
+        "eco_transport.txt",
+        "health_resources.txt",
+        "education_support.txt",
+        "matara_recycling_2025.txt"
+    ]
+
+    documents = []
+    for file_path in data_files:
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+            entries = content.strip().split("\n\n")
+            for entry in entries:
+                if entry.strip():
+                    metadata = {"source": file_path}
+                    lines = entry.split("\n")
+                    for line in lines:
+                        if line.startswith("Type:"):
+                            metadata["type"] = line.replace("Type:", "").strip()
+                        elif line.startswith("Name:"):
+                            metadata["name"] = line.replace("Name:", "").strip()
+                    documents.append(Document(page_content=entry, metadata=metadata))
+
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+    texts = text_splitter.split_documents(documents)
+
+    embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    vector_store = FAISS.from_documents(texts, embedding_model)
+    vector_store.save_local("faiss_index")
 
 # --- Embedding and Vector Store ---
 embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 vector_store = FAISS.load_local("faiss_index", embedding_model, allow_dangerous_deserialization=True)
 
-# --- Safe HuggingFaceEndpoint to Remove Unsupported kwargs ---
-class SafeHuggingFaceEndpoint(HuggingFaceEndpoint):
-    def _call(self, prompt, stop=None, run_manager=None, **kwargs):
-        kwargs.pop("stop", None)
-        kwargs.pop("stop_sequences", None)
-        kwargs.pop("return_full_text", None)
-        kwargs.pop("watermark", None)
-        return super()._call(prompt, stop=None, run_manager=run_manager, **kwargs)
-
-llm = SafeHuggingFaceEndpoint(
-    repo_id="google/flan-t5-large",
-    task="text-generation",
+# --- Initialize the Local Model with HuggingFacePipeline ---
+model_id = "google/flan-t5-base"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_id)
+pipe = pipeline(
+    "text2text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    max_new_tokens=500,
     temperature=0.7,
-    max_new_tokens=250,
+    device=0 if torch.cuda.is_available() else -1
 )
+
+llm = HuggingFacePipeline(pipeline=pipe)
 
 # --- Prompt Template ---
 prompt_template = """
-As a knowledgeable GreenCity Assistant, your role is to provide accurate, real-time recommendations to urban residents in Matara, Sri Lanka, to enhance sustainability and well-being. Follow these directives to ensure optimal user interactions:
-1. Precision: Respond only with directly relevant info from the provided database.
-2. Topics: Focus only on eco-transport, recycling, health, and education resources.
-3. Off-topic Handling: Politely decline off-topic queries.
-4. Sustainability Focus: Promote eco-friendly practices.
-5. Contextual Accuracy: Stick strictly to query context.
-6. Relevance Check: Guide user to refine irrelevant queries.
-7. No Duplication: Keep each response unique.
-8. Streamlined: No unnecessary comments or closings.
-9. No Sign-offs: Avoid phrases like "Best regards."
-10. Unique Phrasing: No repeated sentence structures.
+You are GreenCity Assistant, providing accurate information on sustainable living in Matara, Sri Lanka. Use the provided context to answer the question concisely. Focus on:
 
-Query Context:
-{context}
+1. Eco-transport, recycling, health, and education.
+2. Specific details like names, locations, contacts, and descriptions.
+3. If the context lacks details, suggest verifying with the source (e.g., www.matara.dist.gov.lk).
+4. Decline off-topic queries politely.
+
+Context: {context}
 
 Question: {question}
 
 Answer:
 """
-
 custom_prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
 
 # --- RAG Chain ---
 rag_chain = RetrievalQA.from_chain_type(
-    llm=llm, 
-    chain_type="stuff", 
-    retriever=vector_store.as_retriever(search_kwargs={"k": 3}),
+    llm=llm,
+    chain_type="stuff",
+    retriever=vector_store.as_retriever(search_kwargs={"k": 5}),
     chain_type_kwargs={"prompt": custom_prompt},
 )
 
 # --- Response Function ---
 def get_response(question):
-    result = rag_chain({"query": question})
-    response_text = result["result"]
-    answer_start = response_text.find("Answer:") + len("Answer:")
-    answer = response_text[answer_start:].strip()
-    return answer
+    try:
+        result = rag_chain({"query": question})
+        response_text = result["result"]
+        
+        # Log retrieved documents for debugging
+        retrieved_docs = vector_store.similarity_search(question, k=5)
+        logger.info("Retrieved Documents:")
+        for doc in retrieved_docs:
+            logger.info(f"- {doc.page_content} (Source: {doc.metadata['source']})")
+        
+        # Extract answer
+        answer_start = response_text.find("Answer:") + len("Answer:") if "Answer:" in response_text else 0
+        answer = response_text[answer_start:].strip()
+        
+        # Remove prompt fragments
+        unwanted_phrases = [
+            "No Duplication", "No Sign-offs", "Best regards", "Streamlined", "Unique Phrasing",
+            "Precision", "Topics", "Off-topic Handling", "Sustainability Focus", "Contextual Accuracy",
+            "Relevance Check", "Query Context", "As a knowledgeable GreenCity Assistant"
+        ]
+        for phrase in unwanted_phrases:
+            answer = answer.replace(phrase, "").strip()
+        
+        answer = " ".join(answer.split())
+        return answer if answer else "I couldn't find a relevant answer. Please try rephrasing your question or check with www.matara.dist.gov.lk."
+    except Exception as e:
+        logger.error(f"Error processing query: {e}")
+        return "An error occurred. Please try again or contact support."
 
 # --- Streamlit App ---
 

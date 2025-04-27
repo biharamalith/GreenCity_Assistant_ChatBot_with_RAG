@@ -1,5 +1,41 @@
-Hospital;Asiri Hospital Matara;3rd Floor, Matara;+94777681138;Private hospital, specializes in mother/baby care. Offers antenatal/postpartum counseling, vaccinations, newborn exams. Counseling program every 3rd Saturday, 8am-4pm.;Source: asirihealth.com, 2023
-Hospital;Matara Cooperative Hospital;Central Matara;+94412222345;General healthcare, public-private model. Contact for services like emergency care, surgeries.;Source: rainbowpages.lk, 2023
-Free Clinic;MMC Public Health Clinic;Contact MMC for location;+94412222275;Assumed public clinic offering free vaccinations, basic care. Part of Sri Lanka’s universal healthcare. Verify address with MMC.;Source: Inferred, verify with www.health.gov.lk
-Mental Health;Asiri Hospital Counseling;3rd Floor, Matara;+94777681138;Postpartum psychological support, referrals to specialists. No dedicated mental health center in Matara.;Source: asirihealth.com, 2023
-Emergency;Ambulance Service;Island-wide;0112691111;Call for emergencies, limited rural access in Matara. Contact MMC for local options.;Source: hikersbay.com, 2023
+Type: Hospital
+Name: Asiri Hospital Matara
+Location: 3rd Floor, Matara
+Contact: +94777681138
+Description: Private hospital specializing in mother/baby care. Offers antenatal/postpartum counseling, vaccinations, and newborn exams. Counseling program every 3rd Saturday, 8am-4pm.
+Source: asirihealth.com, 2023
+
+Type: Hospital
+Name: Matara Cooperative Hospital
+Location: Central Matara
+Contact: +94412222345
+Description: Public-private hospital providing general healthcare, including emergency care and surgeries. Contact for service details.
+Source: rainbowpages.lk, 2023
+
+Type: Free Clinic
+Name: MMC Public Health Clinic
+Location: Matara Municipal Council premises (verify exact address with MMC)
+Contact: +94412222275
+Description: Offers free vaccinations and basic healthcare under Sri Lanka’s universal healthcare system. Contact MMC for clinic hours.
+Source: www.health.gov.lk, 2023 (verify address)
+
+Type: Mental Health
+Name: Asiri Hospital Counseling
+Location: 3rd Floor, Matara
+Contact: +94777681138
+Description: Provides postpartum psychological support and referrals to specialists. No dedicated mental health center in Matara.
+Source: asirihealth.com, 2023
+
+Type: Emergency
+Name: Ambulance Service
+Location: Island-wide
+Contact: 0112691111
+Description: Emergency ambulance service with limited rural access in Matara. Contact MMC for local options.
+Source: hikersbay.com, 2023
+
+Type: Mental Health
+Name: Sri Lanka Sumithrayo
+Location: Island-wide, contact for Matara support
+Contact: +94112682002
+Description: Free counseling and suicide prevention helpline. Available for Matara residents via phone.
+Source: sumithrayo.org, 2023

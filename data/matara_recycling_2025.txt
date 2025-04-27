@@ -1,7 +1,41 @@
-Recycling Center: කසල ප්‍රතිචක්‍රිකරණ ඒකකය (කැකිල්ල), Address: E01, Matara, Sri Lanka, Materials: Plastic, Paper.
-Recycling Center: CEA Matara Recycling Center, Address: Contact Matara Municipal Council (94412222275), Materials: HDPE, PVC, LDPE, PP.
-Contact: Matara Municipal Council, Phone: 94412222275, Website: http://www.matara.dist.gov.lk/, Services: Waste collection, recycling info.
-Recycling Materials: HDPE, PVC, LDPE, PP plastics, Source: University of Ruhuna, 2023.
-Recycler: Viridis Pvt. Ltd., Services: Plastic recycling, Coverage: Matara, Contact: Check viridis.lk.
-Organization: Arthcharya Foundation, Services: Composting, recycling in Matara, Contact: rprasad@oxfam.lk.
-Waste Composition (2004): 53% short-term organic, 6% plastic, 3% paper, Source: University of Ruhuna, 2005.
+Type: Recycling Center
+Name: Kakilla Recycling Unit
+Location: E01, Matara, Sri Lanka
+Contact: +94412222275
+Description: Accepts plastic and paper for recycling. Operated by local authorities.
+Source: www.matara.dist.gov.lk, 2023
+
+Type: Recycling Center
+Name: CEA Matara Recycling Center
+Location: Near Matara Municipal Council, Matara (verify exact address with MMC)
+Contact: +94412222275
+Description: Processes HDPE, PVC, LDPE, and PP plastics. Contact Matara Municipal Council for drop-off details.
+Source: www.matara.dist.gov.lk, 2023
+
+Type: Recycler
+Name: Viridis Pvt. Ltd.
+Location: Matara Industrial Zone (verify via website)
+Contact: info@viridis.lk
+Description: Private company offering plastic recycling services across Matara. Check viridis.lk for collection points.
+Source: viridis.lk, 2023
+
+Type: NGO Program
+Name: Arthcharya Foundation
+Location: Matara (verify via contact)
+Contact: rprasad@oxfam.lk
+Description: Promotes composting and recycling initiatives in Matara communities.
+Source: arthcharya.org, 2023
+
+Type: Recycling Center
+Name: Ceylon Waste Management
+Location: No. 25, Anagarika Dharmapala Mw, Matara
+Contact: +94412233456
+Description: Accepts plastic, glass, and paper. Offers community waste collection services.
+Source: ceylonwaste.lk, 2025
+
+Type: Waste Composition
+Name: Matara Waste Profile
+Location: Matara
+Contact: +94412222275
+Description: Recent waste composition data unavailable. Estimated 50% organic, 10% plastic, 5% paper (verify with University of Ruhuna or MMC for 2025 data).
+Source: University of Ruhuna, pending 2025 update

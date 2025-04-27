@@ -5,13 +5,17 @@ from langchain.schema import Document
 import os
 from dotenv import load_dotenv
 from collections import OrderedDict
+import logging
 
-# Load environment variables from .env file
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Load environment variables
 load_dotenv()
-
 os.environ["HUGGINGFACEHUB_API_TOKEN"] = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
-# Load data from text files
+# Load data from text files (files are in the same directory as the script)
 data_files = [
     "eco_transport.txt",
     "health_resources.txt",
@@ -21,49 +25,51 @@ data_files = [
 
 documents = []
 for file_path in data_files:
-    with open(file_path, "r", encoding="utf-8") as f:
-        content = f.read()
-        # Split content by lines and create a Document for each entry
-        entries = content.strip().split("\n")
-        for entry in entries:
-            if entry.strip():
-                documents.append(Document(page_content=entry, metadata={"source": file_path}))
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+            # Split content into entries (each entry separated by blank line)
+            entries = content.strip().split("\n\n")
+            for entry in entries:
+                if entry.strip():
+                    # Parse fields
+                    lines = entry.split("\n")
+                    metadata = {"source": file_path}
+                    doc_content = entry
+                    for line in lines:
+                        if line.startswith("Type:"):
+                            metadata["type"] = line.replace("Type:", "").strip()
+                        elif line.startswith("Name:"):
+                            metadata["name"] = line.replace("Name:", "").strip()
+                    documents.append(Document(page_content=doc_content, metadata=metadata))
+    except Exception as e:
+        logger.error(f"Error reading {file_path}: {e}")
 
 # Split the text
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=300)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
 texts = text_splitter.split_documents(documents)
 
 # Initialize the embedding model
 embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-# Convert texts to embeddings and create FAISS index
+# Create FAISS index
 try:
-    # Create FAISS vector store
     vector_store = FAISS.from_documents(texts, embedding_model)
-    print("Vector Embeddings created successfully")
-    
-    # Save the FAISS index to disk
+    logger.info("Vector Embeddings created successfully")
     vector_store.save_local("faiss_index")
 except Exception as e:
-    print(f"Error creating vector embeddings: {e}")
+    logger.error(f"Error creating vector embeddings: {e}")
 
 # Validate the setup
 try:
-    # Load the FAISS index for testing
     vector_store = FAISS.load_local("faiss_index", embedding_model, allow_dangerous_deserialization=True)
-    
-    # Test query to validate data retrieval
     test_query = "Where can I find a recycling center in Matara?"
-    results = vector_store.similarity_search(test_query, k=3)
-
-    # Deduplicate results
+    results = vector_store.similarity_search(test_query, k=5)
     unique_results = OrderedDict()
     for doc in results:
         if doc.page_content not in unique_results:
             unique_results[doc.page_content] = doc
-
-    # Convert unique results to a list and limit to top 3
-    final_results = list(unique_results.values())[:3]
-    print(f"Unique query results: {final_results}")
+    final_results = list(unique_results.values())[:5]
+    logger.info(f"Unique query results: {[doc.page_content for doc in final_results]}")
 except Exception as e:
-    print(f"Error during test query: {e}")
+    logger.error(f"Error during test query: {e}")

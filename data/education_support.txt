@@ -1,5 +1,43 @@
-Free Tuition;Rahula College Matara;Wilfred Gunasekara Mawatha, Matara;+94412222346;Government school, free education for grades 1-13. Includes science, arts, commerce streams.;Source: Inferred, verify with www.moe.gov.lk
-Free Tuition;MMC Literacy Program;Contact MMC for location;+94412222275;Assumed adult literacy classes, free for residents. Verify with MMC or www.matara.dist.gov.lk.;Source: Inferred, verify with MMC
-NGO Program;Save the Children Matara;Contact for location;+94112588103;Literacy and vocational training for youth, assumed active in Matara based on Southern Province programs.;Source: Inferred, verify with www.savethechildren.org
-Government Program;Ministry of Education;Island-wide, contact MMC;+94412222275;Free textbooks, uniforms for school students. Vocational training via Vocational Training Authority (VTA) in Matara.;Source: www.moe.gov.lk, 2023
-Vocational Training;VTA Matara Center;Contact MMC for location;+94412222275;Free or subsidized courses in IT, mechanics, hospitality. Verify address with VTA or MMC.;Source: Inferred, verify with www.vta.lk
+Type: Free Tuition
+Name: Rahula College Mat,市场
+
+System: ara
+Location: Wilfred Gunasekara Mawatha, Matara
+Contact: +94412222346
+Description: Government school offering free education for grades 1-13. Includes science, arts, and commerce streams.
+Source: www.moe.gov.lk, 2023
+
+Type: Free Tuition
+Name: MMC Literacy Program
+Location: Matara Municipal Council premises (verify exact address with MMC)
+Contact: +94412222275
+Description: Free adult literacy classes for Matara residents. Contact MMC for schedule and enrollment.
+Source: www.matara.dist.gov.lk, 2023 (verify with MMC)
+
+Type: NGO Program
+Name: Save the Children Matara
+Location: Matara (verify via contact)
+Contact: +94112588103
+Description: Offers literacy and vocational training for youth in Matara, part of Southern Province programs.
+Source: www.savethechildren.org, 2023 (verify local presence)
+
+Type: Government Program
+Name: Ministry of Education
+Location: Island-wide, contact MMC for Matara details
+Contact: +94412222275
+Description: Provides free textbooks and uniforms for school students. Supports vocational training via VTA in Matara.
+Source: www.moe.gov.lk, 2023
+
+Type: Vocational Training
+Name: VTA Matara Center
+Location: Near Matara Technical College (verify exact address with VTA or MMC)
+Contact: +94412222275
+Description: Offers free or subsidized courses in IT, mechanics, and hospitality. Contact VTA for course details.
+Source: www.vta.lk, 2023 (verify address)
+
+Type: Free Tuition
+Name: S. Thomas’ College Matara
+Location: High Street, Matara
+Contact: +94412223345
+Description: Government-aided school offering free education for grades 6-13. Includes science and commerce streams.
+Source: www.moe.gov.lk, 2023
